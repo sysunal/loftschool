@@ -1,8 +1,8 @@
 let array = [1, 2, 3, 4, 5, 6];
-forEach(array);
+forEach(array, print);
 let greaterThan4 = filter(array, 4);
 console.log(greaterThan4);
-let sqare = map(array);
+let sqare = map(array, foo);
 console.log(sqare);
 let part = slice(array, 1, -1);
 console.log(part);
@@ -11,10 +11,14 @@ console.log(sum);
 let res = splice(array, -2, 1, 7, 8, 9);
 console.log(res);
 
-function forEach(array, filterFn) {
+function forEach(array, fn) {
     for (var i = 0; i < array.length; i++) {
-        console.log(array[i]);
+        fn(array[i]);
     }
+}
+
+function print(i) {
+    console.log(i);
 }
 
 function filter(array, filter) {
@@ -27,11 +31,11 @@ function filter(array, filter) {
     return a;
 }
 
-function map(array) {
+function map(array, fn) {
     let a = [];
     a.length = array.length;
     for (var i = 0; i < array.length; i++) {
-        a[i] = array[i] * array[i];
+        a[i] = fn(array[i], array[i]);
     }
     return a;
 }
