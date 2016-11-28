@@ -1,22 +1,32 @@
 timer(3000).then(() => console.log('я вывелась через 3 секунды'));
 
-
-function timer(time) {
-    var promise = new Promise(function(resolve, reject) {
-        setTimeout(() => { resolve(1); }, time);
+sentReq('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
+    .then(function(resp) {
+        var city = [];
+        for(var i = 0; i < resp.length; i++) {
+            city.push(resp[i].name);
+        }
+        container.textContent = city.sort();
     });
 
-    return promise;
+
+function timer(time) {
+    return new Promise(function(resolve, reject) {
+        setTimeout(() => { resolve(); }, time);
+    });
 }
 
-var req = new XMLHttpRequest();
-req.open('GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json', true);
-req.onload = function() {
-    var resp = JSON.parse(req.response);
-    var city = [];
-    for(var i = 0; i < resp.length; i++) {
-        city[i] = resp[i].name;
-    }
-    console.log(city.sort());
-};
-req.send();
+function sentReq(url) {
+    return new Promise(function(resolve, reject) {
+        var req = new XMLHttpRequest();
+        req.open('GET', url);
+        req.responseType = 'json';
+        req.send();
+        req.addEventListener('load',function() {
+            resolve(req.response);
+        });
+        req.addEventListener('error',function() {
+            reject();
+        });
+    })
+}
