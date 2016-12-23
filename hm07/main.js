@@ -26,19 +26,16 @@ if (a.length > 0) {
         button.id = "delButton" + i;
         button.value = "удалить";
         cellDelete.appendChild(button);
-        //button.addEventListener('click', deleteMyCookie(i, couple[0]));
-
+        button.addEventListener('click', deleteMyCookie);
     }
     document.body.appendChild(table);
-
-    for(var i = 0; i < a.length; i++) {
-        var button = document.getElementById("delButton" + i)
-        button.addEventListener("click", deleteMyCookie(i, a[i].split("=")[0]));
-    }
 }
 
+function deleteMyCookie(event) {
+    var target = $( event.target );
+    var idCookie = target[0].id.slice(-1);
+    var name = document.cookie.split(";")[idCookie].split("=")[0].trim();
 
-function deleteMyCookie(row, name) {
     if(confirm("Удалить cookie с именем " + name + "?")) {
         var date = new Date(0);
         document.cookie = name + "=; path=/; expires=" + date.toUTCString();
