@@ -1,8 +1,6 @@
 document.cookie = 'nameC=valueC';
 
-var x = document.cookie;
-container.textContent = x;
-var a = x.split(";");
+var a = document.cookie.split(";");
 if (a.length > 0) {
     var table = document.createElement('table');
     var header = table.createTHead();
@@ -27,21 +25,22 @@ if (a.length > 0) {
         button.type = "button"
         button.id = "delButton" + i;
         button.value = "удалить";
-        button.addEventListener('click', deleteMyCookie(i));
         cellDelete.appendChild(button);
+        //button.addEventListener('click', deleteMyCookie(i, couple[0]));
 
     }
     document.body.appendChild(table);
 
-    // for(var i = 0; i < a.length; i++) {
-    //     var button = document.getElementById("delButton" + i)//document.querySelector("delButton" + i);
-    //     button.addEventListener('click', deleteMyCookie(i));
-    // }
+    for(var i = 0; i < a.length; i++) {
+        var button = document.getElementById("delButton" + i)
+        button.addEventListener("click", deleteMyCookie(i, a[i].split("=")[0]));
+    }
 }
 
 
-function deleteMyCookie(row) {
-    console.log(row);
-
-
+function deleteMyCookie(row, name) {
+    if(confirm("Удалить cookie с именем " + name + "?")) {
+        var date = new Date(0);
+        document.cookie = name + "=; path=/; expires=" + date.toUTCString();
+    }
 }
