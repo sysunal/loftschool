@@ -39,5 +39,8 @@ var Model = {
     },
     getGroups: function() {
         return this.callApi('groups.get', { extended: 1 });
+    },
+    getPhotos: function() {
+        return this.callApi('photos.getAll', { extended: 1, count: 200 });
     }
 };
