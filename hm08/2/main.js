@@ -1,13 +1,9 @@
 Handlebars.registerHelper('formatDate', function(bdate) {
-    var date = new Date(0);
     if ((typeof bdate != "undefined")) {
         //date = bdate;
         return 'Дата рождения: ' + bdate;
     }
-    //let today = new Date();
-
-    let age = date.getMonth() + 1;
-    return 'Дата рождения: ' + date.getDate() + '.' + age + '.' + date.getFullYear();
+    return 'Дата рождения не указана';
 });
 
 new Promise(function(resolve) {
@@ -48,11 +44,9 @@ new Promise(function(resolve) {
       if (serverAnswer.error) {
         reject(new Error(serverAnswer.error.error_msg));
       } else {
-        console.log(serverAnswer.response);
         let source = friendItemTemplate.innerHTML;
         let templateFn = Handlebars.compile(source);
-        let template = templateFn({ list: serverAnswer.response });
-
+        let template = templateFn({ list: serverAnswer.response.sort(compare) });
         results.innerHTML = template;
 
         resolve();
@@ -62,3 +56,38 @@ new Promise(function(resolve) {
 }).catch(function(e) {
   alert(`Ошибка: ${e.message}`);
 });
+
+function compare(a, b) {
+    let aDate = new Date();
+    let bDate = new Date();
+    let today = new Date();
+    aDate.setDate(aDate.getDate() - 1);
+    bDate.setDate(bDate.getDate() - 1);
+    if ((typeof a.bdate != "undefined")) {
+        aDate.setDate(a.bdate.split(".")[0]);
+        aDate.setMonth(a.bdate.split(".")[1] - 1);
+        if (aDate >= today) {
+            aDate.setFullYear(aDate.getFullYear() - 1);
+        }
+        aDate.setDate(aDate.getDate() - today.getDate());
+        aDate.setMonth(aDate.getMonth() - today.getMonth());
+    }
+    if ((typeof b.bdate != "undefined")) {
+        bDate.setDate(b.bdate.split(".")[0]);
+        bDate.setMonth(b.bdate.split(".")[1] - 1);
+        if (bDate >= today) {
+            bDate.setFullYear(bDate.getFullYear() - 1);
+        }
+        bDate.setDate(bDate.getDate() - today.getDate());
+        bDate.setMonth(bDate.getMonth() - today.getMonth());
+    }
+
+  if (aDate < bDate) {
+    return -1;
+  }
+  if (aDate > bDate) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
