@@ -4,6 +4,7 @@ sentReq('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.jso
         let templateFn = Handlebars.compile(source);
         let template = templateFn({ list: resp.sort(compare)});
         results.innerHTML = template;
+        //Фильтровать нужно полученный список городов. Получаем данные, кладем в массив и фильтруем этот массив на основе введенных данных
     });
 
 function sentReq(url) {
