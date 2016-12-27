@@ -60,34 +60,30 @@ new Promise(function(resolve) {
 function compare(a, b) {
     let aDate = new Date();
     let bDate = new Date();
-    let today = new Date();
-    aDate.setDate(aDate.getDate() - 1);
-    bDate.setDate(bDate.getDate() - 1);
-    if ((typeof a.bdate != "undefined")) {
-        aDate.setDate(a.bdate.split(".")[0]);
-        aDate.setMonth(a.bdate.split(".")[1] - 1);
-        if (aDate >= today) {
-            aDate.setFullYear(aDate.getFullYear() - 1);
-        }
-        aDate.setDate(aDate.getDate() - today.getDate());
-        aDate.setMonth(aDate.getMonth() - today.getMonth());
-    }
-    if ((typeof b.bdate != "undefined")) {
-        bDate.setDate(b.bdate.split(".")[0]);
-        bDate.setMonth(b.bdate.split(".")[1] - 1);
-        if (bDate >= today) {
-            bDate.setFullYear(bDate.getFullYear() - 1);
-        }
-        bDate.setDate(bDate.getDate() - today.getDate());
-        bDate.setMonth(bDate.getMonth() - today.getMonth());
-    }
+    aDate = prepareDate(aDate , a.bdate);
+    bDate = prepareDate(bDate , b.bdate);
 
-  if (aDate < bDate) {
-    return -1;
-  }
-  if (aDate > bDate) {
-    return 1;
-  }
-  // a must be equal to b
-  return 0;
+    if (aDate < bDate) {
+        return -1;
+    }
+    if (aDate > bDate) {
+        return 1;
+    }
+    // a must be equal to b
+    return 0;
+}
+
+function prepareDate(xDate, baseDate) {
+    let today = new Date();
+    xDate.setDate(xDate.getDate() - 1);
+    if ((typeof baseDate != "undefined")) {
+        xDate.setDate(baseDate.split(".")[0]);
+        xDate.setMonth(baseDate.split(".")[1] - 1);
+        if (xDate >= today) {
+            xDate.setFullYear(xDate.getFullYear() - 1);
+        }
+        xDate.setDate(xDate.getDate() - today.getDate());
+        xDate.setMonth(xDate.getMonth() - today.getMonth());
+    }
+    return xDate;
 }
