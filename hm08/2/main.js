@@ -1,6 +1,5 @@
 Handlebars.registerHelper('formatDate', function(bdate) {
     if ((typeof bdate != "undefined")) {
-        //date = bdate;
         return 'Дата рождения: ' + bdate;
     }
     return 'Дата рождения не указана';
