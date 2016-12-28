@@ -81,8 +81,6 @@ function prepareDate(xDate, baseDate) {
         if (xDate >= today) {
             xDate.setFullYear(xDate.getFullYear() - 1);
         }
-        xDate.setDate(xDate.getDate() - today.getDate());
-        xDate.setMonth(xDate.getMonth() - today.getMonth());
     }
     return xDate;
 }
